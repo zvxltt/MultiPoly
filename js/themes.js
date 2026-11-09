@@ -388,10 +388,10 @@ MP.THEMES = {
    }
   ],
   "ui": {
-   "accent": "#31d46b",
-   "accent2": "#0f5d32",
-   "bg": "#07140d",
-   "felt": "#0c2a1a"
+   "accent": "#f2c230",
+   "accent2": "#8a6b0a",
+   "bg": "#0c2616",
+   "felt": "#123a22"
   },
   "icons": {
    "station": "🏟️",
@@ -793,10 +793,10 @@ MP.THEMES = {
    }
   ],
   "ui": {
-   "accent": "#3aa0ff",
-   "accent2": "#0d3b6b",
-   "bg": "#06101c",
-   "felt": "#0b2540"
+   "accent": "#f0873a",
+   "accent2": "#8a4310",
+   "bg": "#0b2436",
+   "felt": "#11364f"
   },
   "icons": {
    "station": "✈️",
@@ -1198,10 +1198,10 @@ MP.THEMES = {
    }
   ],
   "ui": {
-   "accent": "#5b86ff",
-   "accent2": "#c43a3a",
-   "bg": "#080c1c",
-   "felt": "#101a3d"
+   "accent": "#e5483d",
+   "accent2": "#8a1f18",
+   "bg": "#101c38",
+   "felt": "#182a52"
   },
   "icons": {
    "station": "🚆",
@@ -1603,10 +1603,10 @@ MP.THEMES = {
    }
   ],
   "ui": {
-   "accent": "#f2b441",
-   "accent2": "#6b3a12",
-   "bg": "#120b06",
-   "felt": "#2a1a0b"
+   "accent": "#d9923b",
+   "accent2": "#7a4a12",
+   "bg": "#1f150c",
+   "felt": "#3a281b"
   },
   "icons": {
    "station": "⚓",
@@ -2008,10 +2008,10 @@ MP.THEMES = {
    }
   ],
   "ui": {
-   "accent": "#ff4d6d",
-   "accent2": "#5a0f26",
-   "bg": "#14060b",
-   "felt": "#2e0d18"
+   "accent": "#e8c05a",
+   "accent2": "#8a6a14",
+   "bg": "#2a0b12",
+   "felt": "#44131d"
   },
   "icons": {
    "station": "🎞️",
@@ -2413,10 +2413,10 @@ MP.THEMES = {
    }
   ],
   "ui": {
-   "accent": "#a56bff",
-   "accent2": "#2a1160",
-   "bg": "#0b0716",
-   "felt": "#1c1136"
+   "accent": "#3ddc97",
+   "accent2": "#12724a",
+   "bg": "#0b1819",
+   "felt": "#11292b"
   },
   "icons": {
    "station": "🕹️",
@@ -2818,10 +2818,10 @@ MP.THEMES = {
    }
   ],
   "ui": {
-   "accent": "#5ef0ff",
-   "accent2": "#2c2a8c",
-   "bg": "#04060f",
-   "felt": "#0b1233"
+   "accent": "#9cc2ff",
+   "accent2": "#3a5c94",
+   "bg": "#080c18",
+   "felt": "#0f1730"
   },
   "icons": {
    "station": "🛸",
@@ -3223,10 +3223,10 @@ MP.THEMES = {
    }
   ],
   "ui": {
-   "accent": "#ff7ac8",
-   "accent2": "#7a1d6b",
-   "bg": "#14070f",
-   "felt": "#2e1027"
+   "accent": "#2ec4b6",
+   "accent2": "#146b63",
+   "bg": "#2b0f17",
+   "felt": "#4a1a24"
   },
   "icons": {
    "station": "🎟️",
@@ -3628,10 +3628,10 @@ MP.THEMES = {
    }
   ],
   "ui": {
-   "accent": "#ff9f43",
-   "accent2": "#7a2e0a",
-   "bg": "#130a05",
-   "felt": "#2b160a"
+   "accent": "#86b56a",
+   "accent2": "#3f6a2c",
+   "bg": "#1d110e",
+   "felt": "#33201a"
   },
   "icons": {
    "station": "🛒",

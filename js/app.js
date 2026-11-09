@@ -21,7 +21,6 @@ const NEWS = [
   { d:'Maintenant', i:'⚡', t:'Cartes Pouvoir', p:"Bouclier, téléportation, racket, chantier offert, grève : un twist exclusif MultiPoly." },
   { d:'Maintenant', i:'🌍', t:'9 univers', p:"Football, Monde, France, Pirates, Cinéma, Jeux vidéo et trois nouveaux : Espace, Fête foraine, Cuisine du monde." },
   { d:'Maintenant', i:'🌐', t:'En ligne fiable', p:"Salons avec code, bots pour compléter la table, reprise si tu quittes, pilote automatique si un joueur s'absente." },
-  { d:'Avant', i:'⚽', t:'Mode Carrière', p:"Toujours là, inchangé : vis la carrière complète d'un footballeur." },
 ];
 
 /* ================================================================== état de l'application */
@@ -62,7 +61,7 @@ function renderProfile(){
   $('#pfXp').style.width = (PF.xpInto() / PF.XP_PER_LEVEL * 100) + '%';
   $('#pfXpTxt').textContent = `${PF.xpInto()} / ${PF.XP_PER_LEVEL} XP`;
   const inp = $('#pseudoInput'); if(document.activeElement !== inp) inp.value = p.pseudo;
-  $('#stGames').textContent = p.gamesPlayed; $('#stWins').textContent = p.gamesWon; $('#stBest').textContent = p.bestCareerNote > 0 ? p.bestCareerNote : '—';
+  $('#stGames').textContent = p.gamesPlayed; $('#stWins').textContent = p.gamesWon; $('#stBest').textContent = p.bestWorth > 0 ? fmt(p.bestWorth) : '—';
   const nxt = PF.EMBLEMS.filter(e => !e.secretName && e.unlock > lvl).sort((a, b) => a.unlock - b.unlock)[0];
   $('#nextUnlock').textContent = nxt ? `Prochain : niveau ${nxt.unlock}` : 'Tous débloqués !';
   const live = inp.value;
@@ -73,32 +72,29 @@ function renderProfile(){
   }).join('');
 }
 function openProfile(first){
-  U.applyTheme('football'); U.applyTheme('football');
   $('#profileTitle').textContent = first ? 'Bienvenue !' : 'Ton profil';
   $('#profileBack').style.visibility = first ? 'hidden' : 'visible';
   renderProfile(); U.showScreen('profileScreen');
 }
-function resetAccent(){ const r = document.documentElement.style; r.setProperty('--accent', '#7c5cff'); r.setProperty('--accent2', '#2b1d6b'); r.setProperty('--bg', '#070a14'); r.setProperty('--felt', '#10173a'); const m = document.querySelector('meta[name=theme-color]'); if(m) m.content = '#070a14'; }
 
-let tickerT = null;
+let tickerT = null, lastHubTheme = MP.THEME_ORDER[Math.floor(Math.random() * MP.THEME_ORDER.length)];
 function startTicker(){
   stopTicker();
-  const ids = MP.THEME_ORDER; let i = Math.floor(Math.random() * ids.length);
+  const ids = MP.THEME_ORDER; let i = Math.max(0, ids.indexOf(lastHubTheme));
   const show = () => {
-    const t = MP.THEMES[ids[i % ids.length]]; i++;
+    const id = ids[i % ids.length], t = MP.THEMES[id]; i++; lastHubTheme = id;
     const el = $('#uniTicker'); if(!el) return;
     el.innerHTML = `<span class="emo">${t.icon}</span><span>Univers : <b>${esc(t.label)}</b></span>`;
-    const r = document.documentElement.style; r.setProperty('--accent', t.ui.accent); r.setProperty('--accent2', t.ui.accent2);
-    const tc = document.querySelector('meta[name=theme-color]'); if(tc) tc.content = '#070a14';
+    U.applyTheme(id);
   };
-  show(); tickerT = setInterval(show, 2800);
+  show(); tickerT = setInterval(show, 4200);
 }
 function stopTicker(){ if(tickerT){ clearInterval(tickerT); tickerT = null; } }
 
 function showHub(){
   Game = null; MP.gameui.unmount();
   hub.online = false; $('#hubTiles').style.display = ''; $('#hubOnline').style.display = 'none';
-  renderMe(); renderResume(); resetAccent();
+  renderMe(); renderResume();
   U.showScreen('landing'); startTicker();
 }
 function renderResume(){
@@ -520,8 +516,6 @@ function init(){
   $('#joinBtn').onclick = () => joinRoom($('#joinCode').value);
   $('#joinCode').addEventListener('input', e => { e.target.value = e.target.value.toUpperCase().replace(/[^A-Z0-9]/g, ''); $('#joinErr').textContent = ''; });
   $('#joinCode').addEventListener('keydown', e => { if(e.key === 'Enter') joinRoom(e.target.value); });
-  // le mode carrière gère lui-même son affichage ; on coupe juste le ticker
-  $('#showCareerBtn').addEventListener('click', () => { stopTicker(); resetAccent(); SND.play('tap'); });
   // profil
   $('#pseudoInput').addEventListener('input', e => { PF.setPseudo(e.target.value); e.target.classList.remove('err'); renderProfile(); renderMe(); });
   $('#embGrid').addEventListener('click', e => { const b = e.target.closest('[data-e]'); if(b && !b.classList.contains('locked')){ PF.setEmblem(+b.dataset.e); SND.play('tap'); renderProfile(); renderMe(); } });
@@ -530,8 +524,7 @@ function init(){
     SND.play('buy'); renderMe(); const q = pendingRoom; pendingRoom = null; showHub(); if(q) { hub.online = true; $('#hubTiles').style.display = 'none'; $('#hubOnline').style.display = ''; $('#joinCode').value = q; joinRoom(q); }
   };
   $('#profileBack').onclick = () => showHub();
-  // le mode Carrière réaffiche l'accueil lui-même : on resynchronise le hub
-  new MutationObserver(() => { const l = $('#landing'); if(l.style.display !== 'none' && U.current() !== 'landing') showHub(); }).observe($('#landing'), { attributes:true, attributeFilter:['style'] });
+  U.applyTheme(lastHubTheme);
   U.showScreen('splashScreen');
   document.addEventListener('visibilitychange', () => { if(!document.hidden && Game && Game.mode !== 'local') { /* mqtt se reconnecte seul */ } });
   document.addEventListener('keydown', e => { if(e.key === 'Escape') U.closeAll(); });

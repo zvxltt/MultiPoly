@@ -18,7 +18,7 @@ const EMBLEMS = [
 ];
 
 function load(){
-  const d = { pseudo:'', emblemIdx:0, xp:0, gamesPlayed:0, gamesWon:0, bestCareerNote:0, bestWorth:0, rentTotal:0 };
+  const d = { pseudo:'', emblemIdx:0, xp:0, gamesPlayed:0, gamesWon:0, bestWorth:0, rentTotal:0 };
   try {
     const raw = localStorage.getItem(KEY);
     if(raw){ const p = JSON.parse(raw); for(const k in d) if(typeof p[k] === typeof d[k]) d[k] = p[k]; }
@@ -55,9 +55,4 @@ MP.profile = {
   },
 };
 
-// Compatibilité avec le mode Carrière (script séparé)
-window.awardXP = n => MP.profile.addXP(n);
-window.updateBestCareerNote = n => { if(n > profile.bestCareerNote){ profile.bestCareerNote = n; save(); } };
-window.getProfilePseudo = () => has() ? profile.pseudo.trim() : null;
-window.renderProfileButton = () => { if(MP.app && MP.app.renderMe) MP.app.renderMe(); };
 })();

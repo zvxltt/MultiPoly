@@ -7,23 +7,36 @@ const esc = s => String(s == null ? '' : s).replace(/[&<>"']/g, c => ({ '&':'&am
 const sleep = ms => new Promise(r => setTimeout(r, ms));
 const fmt = n => (n < 0 ? '-' : '') + Math.abs(Math.round(n)).toLocaleString('fr-FR').replace(/ | /g, ' ') + ' €';
 
-const SCREENS = ['splashScreen', 'landing', 'profileScreen', 'setupScreen', 'lobbyScreen', 'gameScreen', 'careerScreen'];
+const SCREENS = ['splashScreen', 'landing', 'profileScreen', 'setupScreen', 'lobbyScreen', 'gameScreen'];
 let current = null;
 function showScreen(id){
   SCREENS.forEach(x => { const e = document.getElementById(x); if(e) e.style.display = x === id ? 'flex' : 'none'; });
   current = id;
-  const bg = document.getElementById('bgfx'); if(bg) bg.style.display = id === 'careerScreen' ? 'none' : '';
+  const bg = document.getElementById('bgfx'); if(bg) bg.style.display = '';
   if(id !== 'gameScreen') closeAll();
 }
 
-/* ---------- thèmes ---------- */
+/* ---------- thèmes & tables ---------- */
+const lum = hex => { const c = [1, 3, 5].map(i => parseInt(hex.slice(i, i + 2), 16) / 255).map(v => v <= .03928 ? v / 12.92 : Math.pow((v + .055) / 1.055, 2.4)); return .2126 * c[0] + .7152 * c[1] + .0722 * c[2]; };
+let tblSide = 'B', curTable = null;
+function setTable(id){
+  if(curTable === id) return; curTable = id;
+  const a = document.getElementById('tblA'), b = document.getElementById('tblB'); if(!a || !b) return;
+  const next = tblSide === 'A' ? a : b, prev = tblSide === 'A' ? b : a;
+  next.className = 'tbl t-' + id;
+  requestAnimationFrame(() => { next.classList.add('on'); prev.classList.remove('on'); });
+  tblSide = tblSide === 'A' ? 'B' : 'A';
+}
 function applyTheme(id){
   const th = MP.THEMES[id]; if(!th) return;
   const r = document.documentElement.style, u = th.ui;
   r.setProperty('--accent', u.accent); r.setProperty('--accent2', u.accent2);
   r.setProperty('--bg', u.bg); r.setProperty('--felt', u.felt);
+  const la = lum(u.accent), dark = (la + .05) / (lum('#16120a') + .05), light = 1.05 / (la + .05);
+  r.setProperty('--on-accent', dark >= light ? '#16120a' : '#ffffff');
   th.groupColors.forEach((c, i) => r.setProperty('--group-' + i, c));
   const m = document.querySelector('meta[name=theme-color]'); if(m) m.content = u.bg;
+  setTable(id);
 }
 
 /* ---------- feuilles ---------- */
@@ -113,5 +126,5 @@ function openRules(){
   nx.onclick = () => { if(i === RULE_SLIDES.length - 1) ref.close(); else go(i + 1); };
 }
 
-MP.ui = { $, $$, esc, sleep, fmt, showScreen, current: () => current, applyTheme, openSheet, closeAll, isOpen, getOpen, confirmModal, infoModal, toast, confetti, openRules };
+MP.ui = { $, $$, esc, sleep, fmt, showScreen, current: () => current, applyTheme, setTable, openSheet, closeAll, isOpen, getOpen, confirmModal, infoModal, toast, confetti, openRules };
 })();
